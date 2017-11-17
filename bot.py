@@ -1,11 +1,16 @@
 #!/usr/bin/python
 import praw
-import pyocr
+# import pyocr
 
 
 reddit = praw.Reddit('bot1')
 
-subreddit = reddit.subreddit("programmer_humour")
+subreddit = reddit.subreddit("ProgrammerHumor")
 
-for submission in subreddit.hot(limit=5):
-    if reddit.domaim('imgur.com')
+for submission in subreddit.hot(limit=10):
+    if reddit.domain('i.redd.it'):
+        print("Title: ", submission.title)
+        print("Text: ", submission.selftext)
+        print("Score: ", submission.score)
+        print("---------------------------------\n")
+        print("Subdomain", submission.domain)
