@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 import wget
 import praw
 import pytesseract
@@ -30,8 +31,12 @@ for submission in subreddit.hot(limit=10):
         print("Title", submission.title)
         print("URL: ", submission.url)
 	image_data= _get_image(submission.url)
-	 
-	print(pytesseract.image_to_string(Image.open(_get_image(image_data))))
+
+
+	sys.stdout.write("The raw output from tesseract with no processing is:\n\n")
+    	sys.stdout.write("-----------------BEGIN-----------------\n")
+    	sys.stdout.write(pytesseract.image_to_string(image_data) + "\n")
+    	sys.stdout.write("------------------END------------------\n")	 
 
 
  
