@@ -29,9 +29,9 @@ for submission in subreddit.hot(limit=10):
         print("Domain: ", submissiondomain)
         print("Title", submission.title)
         print("URL: ", submission.url)
-	# _get_image(submission.url)
-	process_image(submission.url)       
-	print(pytesseract.image_to_string(Image.open(_get_image(submission.url))))
+	image_data= _get_image(submission.url)
+	 
+	print(pytesseract.image_to_string(Image.open(_get_image(image_data))))
 
 
  
