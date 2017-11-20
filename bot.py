@@ -26,7 +26,7 @@ def _get_image(url):
 
 reddit = praw.Reddit('bot1')
 
-subreddit = reddit.subreddit("image-to-text-beta")
+subreddit = reddit.subreddit("QuotesPorn")
 
 for submission in subreddit.hot(limit=10):
     submissiondomain = submission.domain
@@ -51,7 +51,7 @@ for submission in subreddit.hot(limit=10):
 			sys.stdout.write("\n")
     			sys.stdout.write("------------------END------------------\n")	 
 
-			submission.reply(ocr_data + "\n\n __________________________________________ \n\n This is a bot in early beta. Please direct all hate and complains to my master /u/audscias , thank you, punny humans\n ^^r/image_to_text_beta")
+			submission.reply(ocr_data + "\n\n __________________________________________ \n\n This is a bot in early beta. Please direct all hate and complains to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
 			# post_replied_to.append(submission.id)
 
 
