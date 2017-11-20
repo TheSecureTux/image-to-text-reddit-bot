@@ -42,9 +42,9 @@ for submission in subreddit.hot(limit=10):
         		print("Domain: ", submissiondomain)
         		print("Title", submission.title)
         		print("URL: ", submission.url)
-			image_data= _get_image(submission.url)
-			ocr_data= pytesseract.image_to_string(image_data)
-
+			# image_data= _get_image(submission.url)
+			# ocr_data= _get_image(image_data)
+			ocr_data = process_image(submission.url)
 			sys.stdout.write("The raw output from tesseract OCR for this image is:\n\n")
     			sys.stdout.write("-----------------BEGIN-----------------\n")
 			sys.stdout.write(ocr_data)
