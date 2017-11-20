@@ -1,4 +1,7 @@
 #!/usr/bin/python
+import os
+import re
+import pdb
 import sys
 import wget
 import praw
@@ -26,17 +29,29 @@ subreddit = reddit.subreddit("ProgrammerHumor")
 
 for submission in subreddit.hot(limit=10):
     submissiondomain = submission.domain
-    if submissiondomain == 'i.redd.it':
-        print("Domain: ", submissiondomain)
-        print("Title", submission.title)
-        print("URL: ", submission.url)
-	image_data= _get_image(submission.url)
+    
+    if  not os.path.isfile("posts_replied_to.txt"):
+    	posts_replied_to = []
+    else:
+	with open("posts_replied_to.txt", "r") as f:
+       		posts_replied_to = f.read()
+       		posts_replied_to = posts_replied_to.split("\n")
+       		posts_replied_to = list(filter(None, posts_replied_to))
+    		if submissiondomain == 'i.redd.it' :
+        		print("Domain: ", submissiondomain)
+        		print("Title", submission.title)
+        		print("URL: ", submission.url)
+			image_data= _get_image(submission.url)
+			ocr_data= pytesseract.image_to_string(image_data)
 
+			sys.stdout.write("The raw output from tesseract OCR for this image is:\n\n")
+    			sys.stdout.write("-----------------BEGIN-----------------\n")
+			sys.stdout.write(ocr_data)
+			sys.stdout.write("\n")
+    			sys.stdout.write("------------------END------------------\n")	 
 
-	sys.stdout.write("The raw output from tesseract with no processing is:\n\n")
-    	sys.stdout.write("-----------------BEGIN-----------------\n")
-    	sys.stdout.write(pytesseract.image_to_string(image_data) + "\n")
-    	sys.stdout.write("------------------END------------------\n")	 
+			submission.reply(ocr_data + "\n\n This is a bot in early beta. Please direct all hate and complains to my master /u/audscias , thank you, punny humans")
+			post_replied_to.append(submission.id)
 
 
  
