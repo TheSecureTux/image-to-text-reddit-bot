@@ -17,12 +17,12 @@ from StringIO import StringIO
 def _get_image(url):
     return Image.open(StringIO(requests.get(url).content))
 
-# Improve the image to improve chances of correct recognition
+# Modify the image to improve chances of correct recognition
 def process_image(url):
     image = _get_image(url)
-    image.filter(ImageFilter.SHARPEN)
-    image.filter(ImageFilter.SHARPEN)
-    return pytesseract.image_to_string(image)
+    step1 = image.convert('L')
+    step2 = step1.filter(ImageFilter.SHARPEN).filter(ImageFilter.DETAIL)
+    return pytesseract.image_to_string(step2)
 
 # Output the text to stdout, useful for debugging
 def console_output(ocr_data):
@@ -44,7 +44,7 @@ def post_comment(ocr_data):
 reddit = praw.Reddit('bot1')
 
 # Declare in which subreddit are we going to work
-subreddit = reddit.subreddit("image_to_text_beta")
+subreddit = reddit.subreddit("linuxmasterrace")
 
 
 for submission in subreddit.hot(limit=10):
