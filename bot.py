@@ -9,6 +9,7 @@ import pytesseract
 import requests
 from PIL import Image
 from PIL import ImageFilter
+from PIL import ImageEnhance
 from StringIO import StringIO
 
 
@@ -18,6 +19,7 @@ def _get_image(url):
 
 def process_image(url):
     image = _get_image(url)
+    image.filter(ImageFilter.SHARPEN)
     image.filter(ImageFilter.SHARPEN)
     return pytesseract.image_to_string(image)
 
@@ -36,7 +38,7 @@ def post_comment(ocr_data):
 
 reddit = praw.Reddit('bot1')
 
-subreddit = reddit.subreddit("softwaregore")
+subreddit = reddit.subreddit("image_to_text_beta")
 
 for submission in subreddit.hot(limit=10):
     submissiondomain = submission.domain
