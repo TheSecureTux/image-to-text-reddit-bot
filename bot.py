@@ -21,7 +21,7 @@ def _get_image(url):
 def process_image(url):
     image = _get_image(url)
     step1 = image.convert('L')
-    step2 = step1.filter(ImageFilter.SHARPEN).filter(ImageFilter.DETAIL)
+    step2 = step1.filter(ImageFilter.SHARPEN).filter(ImageFilter.UnsharpMask(threshold=1))
     return pytesseract.image_to_string(step2)
 
 # Output the text to stdout, useful for debugging
@@ -44,7 +44,7 @@ def post_comment(ocr_data):
 reddit = praw.Reddit('bot1')
 
 # Declare in which subreddit are we going to work
-subreddit = reddit.subreddit("linuxmasterrace")
+subreddit = reddit.subreddit("4chan")
 
 
 for submission in subreddit.hot(limit=10):
