@@ -26,7 +26,7 @@ def _get_image(url):
 
 reddit = praw.Reddit('bot1')
 
-subreddit = reddit.subreddit("image_to_text_beta")
+subreddit = reddit.subreddit("softwaregore")
 
 for submission in subreddit.hot(limit=10):
     submissiondomain = submission.domain
