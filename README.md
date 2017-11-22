@@ -14,4 +14,4 @@ Right now the work focuses on improving the wuality of the results by tuning the
 
 In the near future the learning capabilities of Tesseract v.4 will be implemented so it can learn from human transcribers such as these guys, who are doing an awesome and invaluable work:
 
-https://www.reddit.com/r/TranscribersOfReddit/
+- https://www.reddit.com/r/TranscribersOfReddit/
