@@ -1,43 +1,34 @@
 #!/usr/bin/python
 import os
 import re
-import pdb
 import sys
 import wget
 import praw
-import pytesseract
 import requests
-from PIL import Image
-from PIL import ImageFilter
-from PIL import ImageEnhance
 from StringIO import StringIO
+from google.cloud import vision
+from google.cloud.vision import types
 
 
-# Get the content of the image from the URL linked
-def _get_image(url):
-    return Image.open(StringIO(requests.get(url).content))
-
-# Modify the image to improve chances of correct recognition
-def process_image(url):
-    image = _get_image(url)
-    step1 = image.convert('L')
-    step2 = step1.filter(ImageFilter.SHARPEN).filter(ImageFilter.UnsharpMask(threshold=1))
-    return pytesseract.image_to_string(step2)
-
-# Output the text to stdout, useful for debugging
-def console_output(ocr_data):
-    print("Domain: ", submissiondomain)
-    print("Title", submission.title)
-    print("URL: ", submission.url)
-    sys.stdout.write("The raw output from tesseract OCR for this image is:\n\n")
-    sys.stdout.write("-----------------BEGIN-----------------\n")
-    sys.stdout.write(ocr_data)
-    sys.stdout.write("\n")
-    sys.stdout.write("------------------END------------------\n")
 
 # Function to post the text (ocr_data) to reddit as a comment. Autotext added.
 def post_comment(ocr_data):
-    submission.reply(ocr_data + "\n\n __________________________________________ \n\n This is a bot in early beta. Please direct all hate and complaints to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
+    submission.reply(ocr_data + "\n\n __________________________________________ \n\n This is a bot still in beta, but the OCR has been improved (hopefully). Please direct all hate and complaints to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
+
+
+# Call to OCR API
+def detect_text_uri(uri):
+    """Detects text in the file located in Google Cloud Storage or on the Web.
+    """
+    client = vision.ImageAnnotatorClient()
+    image = types.Image()
+    image.source.image_uri = uri
+
+    response = client.text_detection(image=image)
+    texts = response.text_annotations
+
+    for text in texts:
+        return text.description
 
 
 # Declare the bot instance it's going to be pick the details for on praw.ini
@@ -47,6 +38,7 @@ reddit = praw.Reddit('bot1')
 subreddit = reddit.subreddit("4chan")
 
 
+# Loop through the subreddit submissions and actually do the magic
 for submission in subreddit.hot(limit=10):
     # Let's check if have a list of posts we already commented
     if not os.path.isfile("posts_replied_to.txt"):
@@ -60,12 +52,10 @@ for submission in subreddit.hot(limit=10):
             posts_replied_to = list(filter(None, posts_replied_to))
             # Check if domain is i.redd.it and not already commented on:
             if submissiondomain == 'i.redd.it' and submission.id not in posts_replied_to:
-                # Let's process the image text
-                ocr_data = process_image(submission.url)
-                # Show results on stdout
-                console_output(ocr_data)
+                post_content =  detect_text_uri(submission.url)
+                print post_content
                 # Post comment on reddit
-                post_comment(ocr_data)
+                post_comment(post_content)
                 # Add post id to the list
                 posts_replied_to.append(submission.id)
                 with open("posts_replied_to.txt", "w") as f:
