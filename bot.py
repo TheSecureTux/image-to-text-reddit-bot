@@ -35,7 +35,7 @@ def detect_text_uri(uri):
 reddit = praw.Reddit('bot1')
 
 # Declare in which subreddit are we going to work
-subreddit = reddit.subreddit("4chan")
+subreddit = reddit.subreddit(raw_input("Which subreddit should I scan?: ")
 
 
 # Loop through the subreddit submissions and actually do the magic
