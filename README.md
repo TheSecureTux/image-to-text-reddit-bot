@@ -8,3 +8,8 @@ Just download the bot.py and the posts_replied_to.txt	file on the same folder an
     python bot.py
 
 You will see on stdout the text that is going to be posted.
+
+You need to create a praw.ini file to pass the PRAW api the credentials for your bot to be able to post the results on reddit. Please refer to the praw documentation for more info on that:
+
+https://praw.readthedocs.io/en/latest/
+
