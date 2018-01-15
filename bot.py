@@ -2,9 +2,7 @@
 import os
 import re
 import sys
-import wget
 import praw
-import requests
 from StringIO import StringIO
 from google.cloud import vision
 from google.cloud.vision import types
@@ -28,14 +26,16 @@ def detect_text_uri(uri):
     texts = response.text_annotations
 
     for text in texts:
-        return text.description
-
+        textdescription = ("    "+ text.description )
+        return textdescription
 
 # Declare the bot instance it's going to be pick the details for on praw.ini
 reddit = praw.Reddit('bot1')
 
 # Declare in which subreddit are we going to work
-subreddit = reddit.subreddit(raw_input("Which subreddit should I scan?: ")
+subredditToScan = raw_input("Which subreddit would you like to scan?: ")
+subreddit = reddit.subreddit(subredditToScan)
+
 
 
 # Loop through the subreddit submissions and actually do the magic
@@ -47,8 +47,8 @@ for submission in subreddit.hot(limit=10):
         # Open the list and read one by one. Also get the domain where it's posted
         with open("posts_replied_to.txt", "r") as f:
             submissiondomain = submission.domain
-       	    posts_replied_to = f.read()
-       	    posts_replied_to = posts_replied_to.split("\n")
+            posts_replied_to = f.read()
+            posts_replied_to = posts_replied_to.split("\n")
             posts_replied_to = list(filter(None, posts_replied_to))
             # Check if domain is i.redd.it and not already commented on:
             if submissiondomain == 'i.redd.it' and submission.id not in posts_replied_to:
