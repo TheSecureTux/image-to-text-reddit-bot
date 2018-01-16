@@ -13,3 +13,7 @@ You need to create a praw.ini file to pass the PRAW api the credentials for your
 
 https://praw.readthedocs.io/en/latest/
 
+Contact me:
+
+https://reddit.com/r/image_to_text_beta
+
