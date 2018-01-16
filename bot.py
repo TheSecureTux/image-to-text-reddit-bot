@@ -23,6 +23,7 @@ def scan_images(url):
     image.source.image_uri = url
     response = client.text_detection(image=image)
     text = response.text_annotations
+    print text[0].description
     return text[0].description
 
 #Function to format the text to post it as a code block on reddit
@@ -36,7 +37,21 @@ def format_text(rawtext):
 #Function to post the formatted text to reddit
 
 def post_comment(ocr_data):
-    submission.reply(ocr_data + "\n\n __________________________________________ \n\n  Please direct all hate and complaints to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
+    submission.reply(ocr_data + "\n\n __________________________________________ \n\n Beta bot on its way to becoming Skynet. Please direct all hate and complaints to my master /u/audscias , thank you.  ^^More ^^info ^^r/image_to_text_beta")
+
+
+#Function to detect the context of the image
+
+def context(url):
+    client = vision.ImageAnnotatorClient()
+    image = types.Image()
+    image.source.image_uri = url
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+    for label in labels:
+        print label.description
+
+
 
 
 
@@ -50,6 +65,7 @@ for submission in subreddit.hot(limit=10):
         with open("posts_replied_to.txt","a"):
             if submission.domain == "i.redd.it" :
                 text = scan_images(submission.url)
+                labels = context(submission.url)
                 formatted_text = format_text(text)
                 post_comment(formatted_text)
                 with open("posts_replied_to.txt","w") as f:
@@ -65,6 +81,7 @@ for submission in subreddit.hot(limit=10):
             posts_replied_to = list(filter(None,posts_replied_to))
             if submission.domain == "i.redd.it" and submission.id not in posts_replied_to:
                 text = scan_images(submission.url)
+                labels = context(submission.url)
                 formatted_text = format_text(text)
                 post_comment(formatted_text)
                 with open("posts_replied_to.txt","w") as f:
