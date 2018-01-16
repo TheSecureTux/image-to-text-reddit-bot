@@ -53,6 +53,8 @@ for submission in subreddit.hot(limit=10):
                 formatted_text = format_text(text)
                 post_comment(formatted_text)
                 with open("posts_replied_to.txt","w") as f:
+                    posts_replied_to = list(filter(None, posts_replied_to))
+                    posts_replied_to.append(submission.id)
                     for post_id in posts_replied_to:
                         f.write(post_id + "\n")
 
@@ -66,5 +68,7 @@ for submission in subreddit.hot(limit=10):
                 formatted_text = format_text(text)
                 post_comment(formatted_text)
                 with open("posts_replied_to.txt","w") as f:
+                    posts_replied_to = list(filter(None, posts_replied_to))
+                    posts_replied_to.append(submission.id)
                     for post_id in posts_replied_to:
                         f.write(post_id + "\n")
