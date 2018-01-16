@@ -36,7 +36,7 @@ def format_text(rawtext):
 #Function to post the formatted text to reddit
 
 def post_comment(ocr_data):
-    submission.reply(ocr_data + "\n\n __________________________________________ \n\n This is a bot still in beta, but the OCR has been improved (hopefully). Please direct all hate and complaints to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
+    submission.reply(ocr_data + "\n\n __________________________________________ \n\n  Please direct all hate and complaints to my master /u/audscias , thank you, puny humans\n ^^r/image_to_text_beta")
 
 
 
